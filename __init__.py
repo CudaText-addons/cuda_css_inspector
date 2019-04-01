@@ -69,6 +69,18 @@ class Command:
             for i in css:
                 csscode+=i.text
 
+            css_links=[]
+            linkedcss=cssselect.CSSSelector('link')(tree)
+            for i in linkedcss:
+                if i.attrib['rel']=='stylesheet':
+                    css_links.append(i.attrib['href'])
+
+            dir_ed = os.path.dirname(ed.get_filename())
+            for fn in css_links:
+                fn = os.path.join(dir_ed, fn)
+                if os.path.isfile(fn):
+                    csscode += '\n'+open(fn, encoding='utf8').read()+'\n'
+
             csscodeold=csscode
             csscode=''
             for i in csscodeold:
