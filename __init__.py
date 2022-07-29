@@ -59,7 +59,7 @@ class Command:
         if not rootlist:
             dlg_proc(self.panel, DLG_CTL_PROP_SET, index=self.label, prop={'cap': '?',})
             return
-            
+
         root=rootlist[-1]
         while(len(root.getchildren())>0):
             root=root.getchildren()[-1]
