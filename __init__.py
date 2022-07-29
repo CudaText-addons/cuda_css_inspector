@@ -67,7 +67,8 @@ class Command:
         csscode=''
         css=cssselect.CSSSelector('style')(tree)
         for i in css:
-            csscode+=i.text
+            if i.text:
+                csscode+=i.text
 
         css_links=[]
         linkedcss=cssselect.CSSSelector('link')(tree)
