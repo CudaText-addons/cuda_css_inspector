@@ -23,16 +23,14 @@ class Command:
 
     def __init__(self):
         self.panel = dlg_proc(0, DLG_CREATE)
-        dlg_proc(self.panel, DLG_PROP_SET,prop={
+        dlg_proc(self.panel, DLG_PROP_SET, prop={
             'color': PANEL_COLOR_BG,
         })
-        self.label = dlg_proc(self.panel,DLG_CTL_ADD,'label')
-        dlg_proc(self.panel, DLG_CTL_PROP_SET, index=self.label, prop={
-            'x':3,
-            'y':3,
-            'cap':'?',
-            'font_color': PANEL_COLOR_FONT,
+        n = dlg_proc(self.panel, DLG_CTL_ADD, 'listbox_ex')
+        dlg_proc(self.panel, DLG_CTL_PROP_SET, index=n, prop={
+            'align': ALIGN_CLIENT,
         })
+        self.listbox = dlg_proc(self.panel, DLG_CTL_HANDLE, index=n)
         app_proc(PROC_SIDEPANEL_ADD_DIALOG, (TITLE, self.panel, fn_icon) )
 
     def show_panel(self):
@@ -42,6 +40,8 @@ class Command:
         file_open(fn_config)
 
     def on_caret(self, ed_self):
+
+        listbox_proc(self.listbox, LISTBOX_DELETE_ALL)
 
         # get text until closing >
         x, y, x1, y1 = ed_self.get_carets()[0]
@@ -53,17 +53,16 @@ class Command:
 
         tree=etree.parse(StringIO(text),etree.HTMLParser())
         if not tree:
-            dlg_proc(self.panel, DLG_CTL_PROP_SET, index=self.label, prop={'cap': '?',})
             return
-
         roots=tree.getroot()
         if roots is None or len(roots)==0:
-            dlg_proc(self.panel, DLG_CTL_PROP_SET, index=self.label, prop={'cap': '?',})
             return
 
         root=roots[-1]
         while(len(root.getchildren())>0):
             root=root.getchildren()[-1]
+        if not isinstance(root.tag, str):
+            return
 
         csscode=''
         css=cssselect.CSSSelector('style')(tree)
@@ -120,8 +119,6 @@ class Command:
         if 'style' in root.attrib:
             res+=root.attrib['style']
 
-        res = res.replace(';','\n')
-
-        dlg_proc(self.panel, DLG_CTL_PROP_SET, index=self.label, prop={
-          'cap': '<%s>\n%s' % (root.tag, res),
-        })
+        listbox_proc(self.listbox, LISTBOX_ADD, index=-1, text='<'+root.tag+'>')
+        for s in res.split(';'):
+            listbox_proc(self.listbox, LISTBOX_ADD, index=-1, text=s)
