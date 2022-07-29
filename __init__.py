@@ -55,12 +55,13 @@ class Command:
         if not tree:
             dlg_proc(self.panel, DLG_CTL_PROP_SET, index=self.label, prop={'cap': '?',})
             return
-        rootlist=tree.getroot()
-        if not rootlist:
+
+        roots=tree.getroot()
+        if roots is None or len(roots)==0:
             dlg_proc(self.panel, DLG_CTL_PROP_SET, index=self.label, prop={'cap': '?',})
             return
 
-        root=rootlist[-1]
+        root=roots[-1]
         while(len(root.getchildren())>0):
             root=root.getchildren()[-1]
 
@@ -79,7 +80,7 @@ class Command:
         for fn in css_links:
             fn = os.path.join(dir_ed, fn)
             if os.path.isfile(fn):
-                csscode += '\n'+open(fn, encoding='utf8').read()+'\n'
+                csscode += '\n'+open(fn, encoding='utf8', errors='replace').read()+'\n'
 
         csscodeold=csscode
         csscode=''
@@ -97,7 +98,8 @@ class Command:
                     i=i[1:]
                 elif i[-1]==' ':
                     i=i[:-1]
-                else: break
+                else:
+                    break
             csscode=csscode+i
 
         cssarr=csscode.split('}')[:-1]
@@ -118,8 +120,7 @@ class Command:
         if 'style' in root.attrib:
             res+=root.attrib['style']
 
-        while(';' in res):
-            res = res.replace(';','\n')
+        res = res.replace(';','\n')
 
         dlg_proc(self.panel, DLG_CTL_PROP_SET, index=self.label, prop={
           'cap': '<%s>\n%s' % (root.tag, res),
