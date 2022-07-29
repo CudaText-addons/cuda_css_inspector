@@ -52,7 +52,15 @@ class Command:
         text += '\n'+s[:x+1]
 
         tree=etree.parse(StringIO(text),etree.HTMLParser())
-        root=tree.getroot()[-1]
+        if not tree:
+            dlg_proc(self.panel, DLG_CTL_PROP_SET, index=self.label, prop={'cap': '?',})
+            return
+        rootlist=tree.getroot()
+        if not rootlist:
+            dlg_proc(self.panel, DLG_CTL_PROP_SET, index=self.label, prop={'cap': '?',})
+            return
+            
+        root=rootlist[-1]
         while(len(root.getchildren())>0):
             root=root.getchildren()[-1]
 
