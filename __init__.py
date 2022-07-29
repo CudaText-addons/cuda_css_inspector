@@ -52,69 +52,67 @@ class Command:
         text += '\n'+s[:x+1]
 
         tree=etree.parse(StringIO(text),etree.HTMLParser())
-        try:
-            root=tree.getroot()[-1]
-            while(len(root.getchildren())>0):
-                root=root.getchildren()[-1]
+        root=tree.getroot()[-1]
+        while(len(root.getchildren())>0):
+            root=root.getchildren()[-1]
 
-            csscode=''
-            css=cssselect.CSSSelector('style')(tree)
-            for i in css:
-                csscode+=i.text
+        csscode=''
+        css=cssselect.CSSSelector('style')(tree)
+        for i in css:
+            csscode+=i.text
 
-            css_links=[]
-            linkedcss=cssselect.CSSSelector('link')(tree)
-            for i in linkedcss:
-                if i.attrib['rel']=='stylesheet':
-                    css_links.append(i.attrib['href'])
+        css_links=[]
+        linkedcss=cssselect.CSSSelector('link')(tree)
+        for i in linkedcss:
+            if i.attrib['rel']=='stylesheet':
+                css_links.append(i.attrib['href'])
 
-            dir_ed = os.path.dirname(ed.get_filename())
-            for fn in css_links:
-                fn = os.path.join(dir_ed, fn)
-                if os.path.isfile(fn):
-                    csscode += '\n'+open(fn, encoding='utf8').read()+'\n'
+        dir_ed = os.path.dirname(ed.get_filename())
+        for fn in css_links:
+            fn = os.path.join(dir_ed, fn)
+            if os.path.isfile(fn):
+                csscode += '\n'+open(fn, encoding='utf8').read()+'\n'
 
-            csscodeold=csscode
-            csscode=''
-            for i in csscodeold:
-                if i in ['\t']:
-                    pass
-                else:
-                    csscode+=(i)
+        csscodeold=csscode
+        csscode=''
+        for i in csscodeold:
+            if i in ['\t']:
+                pass
+            else:
+                csscode+=(i)
 
-            csscodeold=csscode
-            csscode=''
-            for i in csscodeold.split('\n'):
-                while len(i)>0:
-                    if i[0]==' ':
-                        i=i[1:]
-                    elif i[-1]==' ':
-                        i=i[:-1]
-                    else: break
-                csscode=csscode+i
+        csscodeold=csscode
+        csscode=''
+        for i in csscodeold.split('\n'):
+            while len(i)>0:
+                if i[0]==' ':
+                    i=i[1:]
+                elif i[-1]==' ':
+                    i=i[:-1]
+                else: break
+            csscode=csscode+i
 
-            cssarr=csscode.split('}')[:-1]
-            for i in range(len(cssarr)):
-                cssarr[i]=[cssarr[i].split('{')[0].split(' '),cssarr[i].split('{')[1]]
+        cssarr=csscode.split('}')[:-1]
+        for i in range(len(cssarr)):
+            _x = cssarr[i].split('{')
+            if len(_x)>1:
+                cssarr[i]=[_x[0].split(' '),_x[1]]
 
-            res=''
-            for i in cssarr:
+        res=''
+        for i in cssarr:
+            if len(i)>1:
                 if 'class' in root.attrib and '.'+root.attrib['class'] in i[0]:
                     res+=i[1]
                 elif 'id' in root.attrib  and '#'+root.attrib['id'] in i[0]:
                     res+=i[1]
                 elif root.tag in i[0]:
                     res+=i[1]
-            if 'style' in root.attrib:
-                res+=root.attrib['style']
+        if 'style' in root.attrib:
+            res+=root.attrib['style']
 
-            while(';' in res):
-                res = res.replace(';','\n')
+        while(';' in res):
+            res = res.replace(';','\n')
 
-            dlg_proc(self.panel, DLG_CTL_PROP_SET, index=self.label, prop={
-              'cap': '<%s>\n%s' % (root.tag, res),
-            })
-        except:
-            dlg_proc(self.panel, DLG_CTL_PROP_SET, index=self.label, prop={
-              'cap':'?',
-            })
+        dlg_proc(self.panel, DLG_CTL_PROP_SET, index=self.label, prop={
+          'cap': '<%s>\n%s' % (root.tag, res),
+        })
