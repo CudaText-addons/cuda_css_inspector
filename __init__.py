@@ -1,5 +1,6 @@
 import sys
 import os
+import re
 from cudatext import *
 from io import StringIO
 
@@ -18,6 +19,8 @@ TITLE = 'CSS Inspector'
 ui = app_proc(PROC_THEME_UI_DICT_GET, '')
 PANEL_COLOR_BG = ui['EdTextBg']['color']
 PANEL_COLOR_FONT = ui['EdTextFont']['color']
+regex_cmt = re.compile(r"\s*/\*.*?\*/\s*")
+
 
 class Command:
 
@@ -108,10 +111,12 @@ class Command:
             if len(_x)>1:
                 cssarr[i]=[_x[0].split(' '),_x[1]]
 
+        classes = root.attrib['class'].split(' ') if 'class' in root.attrib else []
+         
         res=''
         for i in cssarr:
             if len(i)>1:
-                if 'class' in root.attrib and '.'+root.attrib['class'] in i[0]:
+                if any(['.'+cls in i[0] for cls in classes]):
                     res+=i[1]
                 elif 'id' in root.attrib  and '#'+root.attrib['id'] in i[0]:
                     res+=i[1]
@@ -119,6 +124,9 @@ class Command:
                     res+=i[1]
         if 'style' in root.attrib:
             res+=root.attrib['style']
+
+        # delete CSS comments
+        res = re.sub(regex_cmt, '', res)
 
         listbox_proc(self.listbox, LISTBOX_ADD, index=-1, text='<'+root.tag+'>')
         for s in res.split(';'):
