@@ -1,4 +1,6 @@
 2022.07.29
++ add: CudaText sidebar always shows plugin's icon
++ add: plugin is not activated (even in HTML files) until you call it by menu item or sidebar button
 - fix: range-check errors (so that plugin didn't work normally)
 
 2019.04.01
