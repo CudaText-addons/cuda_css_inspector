@@ -1,11 +1,15 @@
-CSS Inspector Plugin for CudaText.
-In HTML documents it shows CSS properties of current tag under caret.
-To call plugin, use menu item "Plugins / CSS Inspector", it will show side panel, and later you can switch to this panel (e.g. after calling Code Tree) by sidebar button with icon "css".
+CSS Inspector plugin for CudaText.
+In HTML documents (with lexer "HTML") it shows CSS properties of current tag under caret.
+To call plugin, use menu item "Plugins / CSS Inspector", it will show side panel with "CSS" icon.
+When you move caret in editor, this panel updates its info.
 
-Properties given by: class; id; "style" tag.
+It calculates tag properties given by: 
+- class
+- id
+- "style" tag
 Properties can be set:
-  - straight in HTML by using "style" tag
-  - in the CSS file and connected by the "link" tag
+- straight in HTML by using "style" tag
+- in the CSS file, and connected by the "link" tag
 
 Libraries
 ---------
@@ -14,7 +18,8 @@ Libraries
 $ pip3 install lxml
 $ pip3 install cssselect
 
+
 Authors:
-  @Medvosa at GitHub
-  Alexey Torgashin (CudaText)
+- @Medvosa at GitHub
+- Alexey Torgashin (CudaText)
 License: MIT
