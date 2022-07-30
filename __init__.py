@@ -114,6 +114,7 @@ class Command:
             if len(_x)>1:
                 cssarr[i]=[_x[0].split(' '),_x[1]]
 
+        # complex files may have space-separated classes in 1 string
         classes = root.attrib['class'].split(' ') if 'class' in root.attrib else []
          
         res=''
@@ -133,4 +134,5 @@ class Command:
 
         listbox_proc(self.listbox, LISTBOX_ADD, index=-1, text='<'+root.tag+'>')
         for s in res.split(';'):
-            listbox_proc(self.listbox, LISTBOX_ADD, index=-1, text=s)
+            if s:
+                listbox_proc(self.listbox, LISTBOX_ADD, index=-1, text=s)
