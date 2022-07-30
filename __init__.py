@@ -133,6 +133,7 @@ class Command:
         res = re.sub(regex_cmt, '', res)
 
         listbox_proc(self.listbox, LISTBOX_ADD, index=-1, text='<'+root.tag+'>')
+        listbox_proc(self.listbox, LISTBOX_SET_SEL, index=0)
         for s in res.split(';'):
             if s:
                 listbox_proc(self.listbox, LISTBOX_ADD, index=-1, text=s)
