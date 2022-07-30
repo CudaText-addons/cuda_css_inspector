@@ -38,18 +38,21 @@ class Command:
 
     def show_panel(self):
         app_proc(PROC_SIDEPANEL_ACTIVATE, TITLE)
+        self.work()
 
     def config(self):
         file_open(fn_config)
 
     def on_caret(self, ed_self):
+        self.work()
 
+    def work(self):
         listbox_proc(self.listbox, LISTBOX_DELETE_ALL)
 
         # get text until closing >
-        x, y, x1, y1 = ed_self.get_carets()[0]
-        text = ed_self.get_text_substr(0, 0, 0, y)
-        s = ed_self.get_text_line(y)
+        x, y, x1, y1 = ed.get_carets()[0]
+        text = ed.get_text_substr(0, 0, 0, y)
+        s = ed.get_text_line(y)
         while x<len(s) and s[x]!='>':
             x+=1
         text += '\n'+s[:x+1]
