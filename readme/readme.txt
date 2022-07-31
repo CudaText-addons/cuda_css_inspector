@@ -11,13 +11,34 @@ Properties can be set:
 - straight in HTML by using "style" tag
 - in the CSS file, and connected by the "link" tag
 
-Libraries
----------
-- Windows: plugin uses local libraries in its folder.
-- Unix: plugin needs additional libs in OS Python, install them like this:
+
+Installation on Linux and Unix'es
+---------------------------------
+
+Plugin needs additional Python libraries, install them like this:
+
 $ pip3 install lxml
 $ pip3 install cssselect
 
+
+Installation on Windows
+-----------------------
+
+Plugin needs additional libraries.
+a) "cssselect" from https://pypi.org/project/cssselect/#files
+Get the .whl file, it is the ZIP archive. Unzip the folder "cssselect" to [CudaText]/py folder.
+You must have [CudaText]/py/cssselect/__init__.py file.
+
+b) "lxml" from https://pypi.org/project/lxml/#files
+Get the .whl file, it is the ZIP archive. Unzip the folder "lxml" to [CudaText]/py folder.
+You must have [CudaText]/py/lxml/__init__.py file.
+Get the package according to your CudaText bitness (32- or 64-bit) and to Python version
+(3.8 is the default for CudaText). For example, for 64-bit and Python 3.8 you need
+"lxml-x.x.x-cp38-cp38-win_amd64.whl".
+
+
+About
+-----
 
 Authors:
 - @Medvosa at GitHub

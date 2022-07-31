@@ -1,4 +1,7 @@
 
+2022.07.31
+* change: removed Python libs for Windows, changed the readme.txt info about installation
+
 2022.07.29
 + add: support several class-names space-separated
 + add: remove CSS comments from output
