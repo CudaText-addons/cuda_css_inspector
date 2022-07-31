@@ -4,11 +4,6 @@ import re
 from cudatext import *
 from io import StringIO
 
-# on Unix user must install libs by "pip3 install ....."
-# on Win: plugin uses local libs
-if os.name=='nt':
-    sys.path.append(os.path.dirname(__file__))
-
 from lxml import etree
 from lxml import cssselect
 
