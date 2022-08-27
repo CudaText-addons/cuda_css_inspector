@@ -7,13 +7,10 @@ from io import StringIO
 from lxml import etree
 from lxml import cssselect
 
-from cudax_lib import get_translation
-_ = get_translation(__file__)  # I18N
-
 fn_config = os.path.join(app_path(APP_DIR_SETTINGS), 'cuda_css_inspector.ini')
 fn_icon = os.path.join(os.path.dirname(__file__), 'icon.png')
 
-TITLE = _('CSS Inspector')
+TITLE = 'CSS Inspector'
 ui = app_proc(PROC_THEME_UI_DICT_GET, '')
 PANEL_COLOR_BG = ui['EdTextBg']['color']
 PANEL_COLOR_FONT = ui['EdTextFont']['color']
