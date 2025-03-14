@@ -4,8 +4,13 @@ import re
 from cudatext import *
 from io import StringIO
 
-from lxml import etree
-from lxml import cssselect
+try:
+    from lxml import etree
+    from lxml import cssselect
+except ImportError:
+    etree = None
+    cssselect = None
+    msg_box('For "CSS Inspector" plugin, you need to install libraries: lxml, cssselect. See details in the plugin\'s readme.txt.', MB_OK+MB_ICONERROR)
 
 fn_config = os.path.join(app_path(APP_DIR_SETTINGS), 'cuda_css_inspector.ini')
 fn_icon = os.path.join(os.path.dirname(__file__), 'icon.png')
