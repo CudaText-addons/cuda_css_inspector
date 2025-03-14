@@ -1,3 +1,5 @@
+2025.03.14
++ add: in the case of missing installed libs (lxml, cssselect) show nice error message-box
 
 2022.07.31
 * change: removed Python libs for Windows, changed the readme.txt info about installation
